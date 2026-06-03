@@ -1,6 +1,10 @@
 import { useState } from 'react'
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import ProductCard from './ProductCard'
 import Panier from './Panier'
+import Accueil from './pages/Accueil'
+import Produits from './pages/Produits'
+import Contact from './pages/Contact'
 
 const produits = [
   { id: 1, nom: "Veste en cuir", prix: 99, image: "/product1.jpg", categorie: "vestes" },
@@ -29,32 +33,35 @@ function App() {
     setPanier([])
   }
 
-  let total = panier.reduce((acc, p) => acc + p.prix * p.quantite, 0)
+  let totalQuantite = panier.reduce((acc, p) => acc + p.quantite, 0)
+  let totalPrix = panier.reduce((acc, p) => acc + p.prix * p.quantite, 0)
 
   return (
-    <div>
-      <h1>LUMONSE</h1>
-      <button onClick={() => setAfficherPanier(!afficherPanier)}>
-        🛒 Panier ({panier.reduce((acc, p) => acc + p.quantite, 0)}) — {total}€
-      </button>
+    <BrowserRouter>
+      <header>
+        <h1>L U M O N S E</h1>
+        <nav>
+          <Link to="/">Accueil</Link>
+          <Link to="/produits">Produits</Link>
+          <Link to="/contact">Contact</Link>
+          <button onClick={() => setAfficherPanier(!afficherPanier)}>
+            🛒 ({totalQuantite}) — {totalPrix}€
+          </button>
+        </nav>
+      </header>
 
       {afficherPanier && (
         <Panier panier={panier} onVider={viderPanier} />
       )}
 
-      <div className="product-list">
-        {produits.map(produit => (
-          <ProductCard
-            key={produit.id}
-            nom={produit.nom}
-            prix={produit.prix}
-            image={produit.image}
-            categorie={produit.categorie}
-            onAjouter={() => ajouterAuPanier(produit)}
-          />
-        ))}
-      </div>
-    </div>
+      <main>
+        <Routes>
+          <Route path="/" element={<Accueil />} />
+          <Route path="/produits" element={<Produits produits={produits} onAjouter={ajouterAuPanier} />} />
+          <Route path="/contact" element={<Contact />} />
+        </Routes>
+      </main>
+    </BrowserRouter>
   )
 }
 
