@@ -6,7 +6,7 @@ import Produits from './pages/Produits'
 import Contact from './pages/Contact'
 import Login from './pages/Login'
 import Register from './pages/Register'
-
+import ProduitDetail from './pages/ProduitDetail'
 function App() {
   const [panier, setPanier] = useState([])
   const [afficherPanier, setAfficherPanier] = useState(false)
@@ -80,6 +80,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/produits/:id" element={<ProduitDetail onAjouter={ajouterAuPanier} />} />
         </Routes>
       </main>
     </BrowserRouter>
