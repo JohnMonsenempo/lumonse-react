@@ -6,7 +6,7 @@ function Produits({ onAjouter }) {
   const [chargement, setChargement] = useState(true)
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/produits')
+    fetch('https://lumonse-backend.onrender.com/api/produits')
       .then(res => res.json())
       .then(data => {
         setProduits(data)

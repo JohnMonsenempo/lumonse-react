@@ -13,7 +13,7 @@ function Login() {
   async function handleSubmit(e) {
     e.preventDefault()
     try {
-      let response = await fetch('http://localhost:3000/api/auth/login', {
+      let response = await fetch('https://lumonse-backend.onrender.com/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form)
