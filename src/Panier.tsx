@@ -1,4 +1,11 @@
-function Panier({ panier, onVider }) {
+import { ProduitPanier } from './types'
+
+interface PanierProps {
+  panier: ProduitPanier[]
+  onVider: () => void
+}
+
+function Panier({ panier, onVider }: PanierProps) {
   let total = panier.reduce((acc, p) => acc + p.prix * p.quantite, 0)
 
   if (panier.length === 0) {
@@ -14,13 +21,13 @@ function Panier({ panier, onVider }) {
     <div className="panier">
       <h2>Mon Panier</h2>
       {panier.map(produit => (
-        <div key={produit.id} className="panier-item">
+        <div key={produit._id} className="panier-item">
           <span>{produit.nom}</span>
-          <span>{produit.quantite} x {produit.prix}€</span>
-          <span>{produit.quantite * produit.prix}€</span>
+          <span>{produit.quantite} x {produit.prix} $</span>
+          <span>{produit.quantite * produit.prix} $</span>
         </div>
       ))}
-      <p><strong>Total : {total}€</strong></p>
+      <p><strong>Total : {total} $</strong></p>
       <button onClick={onVider}>Vider le panier</button>
     </div>
   )

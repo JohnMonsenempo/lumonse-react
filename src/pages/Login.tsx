@@ -1,16 +1,21 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 
+interface LoginForm {
+  email: string
+  motDePasse: string
+}
+
 function Login() {
-  const [form, setForm] = useState({ email: '', motDePasse: '' })
-  const [erreur, setErreur] = useState('')
+  const [form, setForm] = useState<LoginForm>({ email: '', motDePasse: '' })
+  const [erreur, setErreur] = useState<string>('')
   const navigate = useNavigate()
 
-  function handleChange(e) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault()
     try {
       let response = await fetch('https://lumonse-backend.onrender.com/api/auth/login', {
@@ -41,22 +46,22 @@ function Login() {
         <div>
           <label>Email</label>
           <input
-            type="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Mot de passe</label>
-          <input
-            type="password"
-            name="motDePasse"
-            value={form.motDePasse}
-            onChange={handleChange}
-            required
-          />
+    type="email"
+    name="email"
+    value={form.email}
+    onChange={handleChange}
+    placeholder="votre@email.com"
+    required
+/>
+
+<input
+    type="password"
+    name="motDePasse"
+    value={form.motDePasse}
+    onChange={handleChange}
+    placeholder="Votre mot de passe"
+    required
+/>
         </div>
         <button type="submit" className="btn">Se connecter</button>
       </form>

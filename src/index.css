@@ -408,3 +408,9 @@ main {
   line-height: 1.8;
   margin-bottom: 32px;
 }
+
+.nav-bonjour {
+    color: #C9A96E;
+    font-size: 13px;
+    letter-spacing: 1px;
+}

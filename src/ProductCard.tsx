@@ -1,6 +1,15 @@
 import { useNavigate } from 'react-router-dom'
 
-function ProductCard({ id, nom, prix, image, categorie, onAjouter }) {
+interface ProductCardProps {
+  id: string
+  nom: string
+  prix: number
+  image: string
+  categorie: string
+  onAjouter: () => void
+}
+
+function ProductCard({ id, nom, prix, image, categorie, onAjouter }: ProductCardProps) {
   const navigate = useNavigate()
 
   return (

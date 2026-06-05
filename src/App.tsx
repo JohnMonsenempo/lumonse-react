@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { BrowserRouter, Routes, Route, Link, useNavigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import Panier from './Panier'
 import Accueil from './pages/Accueil'
 import Produits from './pages/Produits'
@@ -7,14 +7,16 @@ import Contact from './pages/Contact'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import ProduitDetail from './pages/ProduitDetail'
+import { Produit, ProduitPanier, Utilisateur } from './types'
+
 function App() {
-  const [panier, setPanier] = useState([])
-  const [afficherPanier, setAfficherPanier] = useState(false)
-  const [utilisateur, setUtilisateur] = useState(
-    JSON.parse(localStorage.getItem('utilisateur')) || null
+  const [panier, setPanier] = useState<ProduitPanier[]>([])
+  const [afficherPanier, setAfficherPanier] = useState<boolean>(false)
+  const [utilisateur, setUtilisateur] = useState<Utilisateur | null>(
+    JSON.parse(localStorage.getItem('utilisateur') || 'null')
   )
 
-  function ajouterAuPanier(produit) {
+  function ajouterAuPanier(produit: Produit): void {
     setPanier(panierActuel => {
       let existant = panierActuel.find(p => p._id === produit._id)
       if (existant) {
@@ -27,18 +29,18 @@ function App() {
     })
   }
 
-  function viderPanier() {
+  function viderPanier(): void {
     setPanier([])
   }
 
-  function seDeconnecter() {
+  function seDeconnecter(): void {
     localStorage.removeItem('token')
     localStorage.removeItem('utilisateur')
     setUtilisateur(null)
   }
 
-  let totalQuantite = panier.reduce((acc, p) => acc + p.quantite, 0)
-  let totalPrix = panier.reduce((acc, p) => acc + p.prix * p.quantite, 0)
+  let totalQuantite: number = panier.reduce((acc, p) => acc + p.quantite, 0)
+  let totalPrix: number = panier.reduce((acc, p) => acc + p.prix * p.quantite, 0)
 
   return (
     <BrowserRouter>
@@ -50,9 +52,9 @@ function App() {
           <Link to="/contact">Contact</Link>
           {utilisateur ? (
             <>
-              <span style={{ color: '#C9A96E', fontSize: '13px' }}>
-                Bonjour, {utilisateur.nom}
-              </span>
+              <span className="nav-bonjour">
+    Bonjour, {utilisateur.nom}
+</span>
               <button onClick={seDeconnecter} className="btn">
                 Déconnexion
               </button>
@@ -64,7 +66,7 @@ function App() {
             </>
           )}
           <button onClick={() => setAfficherPanier(!afficherPanier)}>
-            🛒 ({totalQuantite}) — {totalPrix}€
+            🛒 ({totalQuantite}) — {totalPrix} $
           </button>
         </nav>
       </header>
@@ -77,10 +79,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Accueil />} />
           <Route path="/produits" element={<Produits onAjouter={ajouterAuPanier} />} />
+          <Route path="/produits/:id" element={<ProduitDetail onAjouter={ajouterAuPanier} />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/produits/:id" element={<ProduitDetail onAjouter={ajouterAuPanier} />} />
         </Routes>
       </main>
     </BrowserRouter>

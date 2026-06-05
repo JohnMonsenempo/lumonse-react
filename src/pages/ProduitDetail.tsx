@@ -1,16 +1,21 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import { Produit } from '../types'
 
-function ProduitDetail({ onAjouter }) {
-  const { id } = useParams()
+interface ProduitDetailProps {
+  onAjouter: (produit: Produit) => void
+}
+
+function ProduitDetail({ onAjouter }: ProduitDetailProps) {
+  const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const [produit, setProduit] = useState(null)
-  const [chargement, setChargement] = useState(true)
+  const [produit, setProduit] = useState<Produit | null>(null)
+  const [chargement, setChargement] = useState<boolean>(true)
 
   useEffect(() => {
     fetch(`https://lumonse-backend.onrender.com/api/produits/${id}`)
       .then(res => res.json())
-      .then(data => {
+      .then((data: Produit) => {
         setProduit(data)
         setChargement(false)
       })
